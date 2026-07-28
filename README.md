@@ -7,26 +7,24 @@ memasukkan URL secara langsung.
 
 ## 📁 Struktur Folder
 
-```
 .
-├── phishing_classification_ANN_CNN_LSTM.ipynb   # Notebook lengkap: EDA, training, evaluasi
+├── phishing_classification_ANN_CNN_LSTM.ipynb # Notebook lengkap: EDA, training, evaluasi
 ├── dataset/
-│   ├── phishing.csv                              # UCI Phishing Websites Dataset (11.054 baris)
-│   └── phishing_attribute_description.txt        # Deskripsi format atribut dataset asli
+│ ├── phishing.csv # UCI Phishing Websites Dataset (11.054 baris)
+│ └── phishing_attribute_description.txt # Deskripsi format atribut dataset asli
 └── streamlit_app/
-    ├── app.py                 # Aplikasi web utama
-    ├── feature_extractor.py   # Mengubah URL -> 30 fitur (WHOIS, DNS, konten HTML, dll.)
-    ├── model_utils.py         # Load model & jalankan prediksi
-    ├── requirements.txt
-    └── models/                 # Dihasilkan otomatis oleh notebook (langkah "Menyimpan Artefak")
-        ├── best_ANN.keras
-        ├── best_CNN1D.keras
-        ├── best_LSTM.keras
-        ├── scaler.pkl
-        ├── feature_columns.json
-        ├── model_info.json
-        └── evaluation_metrics_summary.csv
-```
+├── app.py # Aplikasi web utama
+├── feature_extractor.py # Mengubah URL -> 30 fitur (WHOIS, DNS, konten HTML, dll.)
+├── model_utils.py # Load model & jalankan prediksi
+├── requirements.txt
+└── models/ # Dihasilkan otomatis oleh notebook (langkah "Menyimpan Artefak")
+├── best_ANN.keras
+├── best_CNN1D.keras
+├── best_LSTM.keras
+├── scaler.pkl
+├── feature_columns.json
+├── model_info.json
+└── evaluation_metrics_summary.csv
 
 ## 🚀 Cara Menjalankan
 
@@ -72,11 +70,11 @@ TPR/FPR dsb. langsung merepresentasikan "seberapa baik model menangkap situs phi
 
 ## 🏗️ 3 Model Deep Learning
 
-| Model | Arsitektur | Ide |
-|---|---|---|
-| **ANN** | Dense(128)→Dense(64)→Dense(32)→sigmoid | Baseline MLP untuk data tabular |
-| **CNN1D** | Conv1D→Conv1D→GlobalAvgPool→Dense | Menangkap pola lokal antar fitur berdekatan |
-| **LSTM** | LSTM(64)→LSTM(32)→Dense | Fitur diperlakukan sebagai "urutan" sekuensial |
+| Model     | Arsitektur                             | Ide                                            |
+| --------- | -------------------------------------- | ---------------------------------------------- |
+| **ANN**   | Dense(128)→Dense(64)→Dense(32)→sigmoid | Baseline MLP untuk data tabular                |
+| **CNN1D** | Conv1D→Conv1D→GlobalAvgPool→Dense      | Menangkap pola lokal antar fitur berdekatan    |
+| **LSTM**  | LSTM(64)→LSTM(32)→Dense                | Fitur diperlakukan sebagai "urutan" sekuensial |
 
 ## 📊 Evaluasi
 
@@ -96,14 +94,14 @@ TPR, TNR, FPR, FNR, PPV, NPV), grouped bar chart gabungan seluruh metrik, dan RO
 
 Hasil pada test set (lihat notebook untuk detail lengkap):
 
-| Model | Accuracy | TPR | TNR | FPR | FNR | PPV | NPV |
-|---|---|---|---|---|---|---|---|
-| ANN | ~92.6% | ~91.8% | ~93.4% | ~6.6% | ~8.2% | ~93.7% | ~91.5% |
-| CNN1D | ~91.2% | ~89.6% | ~92.9% | ~7.1% | ~10.4% | ~93.1% | ~89.4% |
-| LSTM | ~86.2% | ~86.3% | ~86.1% | ~13.9% | ~13.7% | ~86.9% | ~85.5% |
+| Model | Accuracy | TPR    | TNR    | FPR    | FNR    | PPV    | NPV    |
+| ----- | -------- | ------ | ------ | ------ | ------ | ------ | ------ |
+| ANN   | ~92.6%   | ~91.8% | ~93.4% | ~6.6%  | ~8.2%  | ~93.7% | ~91.5% |
+| CNN1D | ~91.2%   | ~89.6% | ~92.9% | ~7.1%  | ~10.4% | ~93.1% | ~89.4% |
+| LSTM  | ~86.2%   | ~86.3% | ~86.1% | ~13.9% | ~13.7% | ~86.9% | ~85.5% |
 
-*(Angka bisa sedikit berbeda tiap kali notebook dijalankan ulang karena inisialisasi bobot
-random, meskipun sudah di-seed.)*
+_(Angka bisa sedikit berbeda tiap kali notebook dijalankan ulang karena inisialisasi bobot
+random, meskipun sudah di-seed.)_
 
 ## ⚠️ Keterbatasan Penting: Ekstraksi Fitur dari URL Live
 
