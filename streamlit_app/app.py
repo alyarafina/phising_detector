@@ -2,11 +2,6 @@
 app.py
 -------
 Linkora — premium SaaS-style front-end for the phishing URL detection engine.
-
-IMPORTANT: This file only changes presentation (layout, styling, copy, UX flow).
-All machine-learning logic — feature extraction, scaling, model loading and
-prediction — is untouched and delegated to feature_extractor.py and
-model_utils.py exactly as before.
 """
 
 import time
@@ -18,9 +13,6 @@ import streamlit as st
 from feature_extractor import extract_features
 from model_utils import load_artifacts, load_all_models, predict_all
 
-# --------------------------------------------------------------------------------
-# Page config
-# --------------------------------------------------------------------------------
 st.set_page_config(
     page_title="Linkora — Phishing URL Detection",
     page_icon="🛡️",
@@ -28,12 +20,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-# --------------------------------------------------------------------------------
-# Presentation-only helpers (do NOT affect the underlying prediction)
-# --------------------------------------------------------------------------------
 def risk_profile(prob_phishing: float, label: int):
-    """Maps an existing model score to a display-only risk tier + recommendation.
-    Purely cosmetic — uses only values already produced by predict_all()."""
     if label == 0 and prob_phishing < 15:
         return "Low", "This URL shows very few phishing indicators. It appears safe to visit, but always verify the domain before entering credentials."
     if label == 0:
@@ -43,9 +30,6 @@ def risk_profile(prob_phishing: float, label: int):
     return "Critical", "This URL strongly matches known phishing patterns. Do not enter credentials, payment details, or personal information."
 
 
-# --------------------------------------------------------------------------------
-# Global styling
-# --------------------------------------------------------------------------------
 st.markdown(
     """
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -72,7 +56,7 @@ st.markdown(
 
 html, body, [class*="css"]{
     font-family:'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    color:var(--ink);
+    color:#3d2f22 !important;
 }
 
 .stApp{ background:var(--surface-alt); }
@@ -80,7 +64,6 @@ html, body, [class*="css"]{
 section[data-testid="stSidebar"]{ display:none; }
 .block-container{padding-top:1rem; max-width:1080px;}
 
-/* ---------------- Responsive: tablet & mobile ---------------- */
 @media (max-width: 900px){
     .block-container{ padding-left:1rem !important; padding-right:1rem !important; }
     div[data-testid="stHorizontalBlock"]{ flex-wrap:wrap !important; }
@@ -106,7 +89,11 @@ section[data-testid="stSidebar"]{ display:none; }
 h1,h2,h3,h4,h5{
     font-family:'Manrope', 'Inter', sans-serif;
     letter-spacing:-0.02em;
-    color:var(--ink);
+    color:#3d2f22 !important;
+}
+
+p, span, div, label, li {
+    color:#3d2f22;
 }
 
 /* ---------------- Navbar ---------------- */
@@ -124,18 +111,17 @@ h1,h2,h3,h4,h5{
 .linkora-logo{
     display:flex; align-items:center; gap:10px;
     font-family:'Manrope', sans-serif;
-    font-weight:800; font-size:1.15rem; color:var(--ink);
+    font-weight:800; font-size:1.15rem; color:#3d2f22;
 }
 .linkora-logo .mark{
     width:30px; height:30px; border-radius:9px;
-    background:var(--ink);
+    background:#3d2f22;
     display:flex; align-items:center; justify-content:center;
     color:#fff; font-size:15px;
 }
-.linkora-nav-links{ display:flex; gap:26px; font-size:.9rem; font-weight:600; color:var(--ink-soft); }
 .linkora-badge{
     font-size:.72rem; font-weight:700; padding:4px 10px; border-radius:999px;
-    background:var(--accent-soft); color:var(--ink-soft);
+    background:var(--accent-soft); color:#3d2f22;
     border:1px solid var(--border);
 }
 
@@ -143,16 +129,16 @@ h1,h2,h3,h4,h5{
 .hero-wrap{ text-align:center; padding:36px 12px 12px 12px; animation:fadeSlideUp .6s ease; }
 .hero-eyebrow{
     display:inline-flex; align-items:center; gap:6px;
-    font-size:.78rem; font-weight:700; color:var(--ink-soft);
+    font-size:.78rem; font-weight:700; color:#3d2f22;
     background:var(--accent-soft); padding:6px 14px; border-radius:999px;
     margin-bottom:18px; border:1px solid var(--border);
 }
 .hero-title{
     font-size:2.9rem; font-weight:800; line-height:1.12; margin:0 0 14px 0;
-    letter-spacing:-0.03em;
+    letter-spacing:-0.03em; color:#3d2f22 !important;
 }
 .hero-sub{
-    max-width:640px; margin:0 auto; color:var(--ink-soft); font-size:1.05rem; line-height:1.6;
+    max-width:640px; margin:0 auto; color:#6b5a48 !important; font-size:1.05rem; line-height:1.6;
 }
 @keyframes fadeSlideUp{
     from{opacity:0; transform:translateY(14px);}
@@ -169,19 +155,20 @@ h1,h2,h3,h4,h5{
 }
 .scan-card-label{
     font-weight:700; font-size:1rem; margin-bottom:10px; display:flex; align-items:center; gap:8px;
+    color:#3d2f22 !important;
 }
 div[data-testid="stTextInput"] input{
     border-radius:12px !important; border:1.5px solid var(--border) !important;
     padding:14px 16px !important; font-size:1rem !important;
-    background:var(--surface-alt) !important;
+    background:var(--surface-alt) !important; color:#3d2f22 !important;
     transition:border-color .15s ease, box-shadow .15s ease;
 }
 div[data-testid="stTextInput"] input:focus{
-    border-color:var(--ink) !important;
+    border-color:#3d2f22 !important;
     box-shadow:0 0 0 3px var(--accent-soft) !important;
 }
 .stButton>button, .stButton>button:focus{
-    background:var(--ink) !important; color:#fff !important;
+    background:#3d2f22 !important; color:#fff !important;
     border-radius:12px !important; border:none !important;
     padding:14px 20px !important; font-weight:700 !important; font-size:.95rem !important;
     transition:transform .12s ease, opacity .12s ease;
@@ -189,8 +176,8 @@ div[data-testid="stTextInput"] input:focus{
 }
 .stButton>button:hover{ transform:translateY(-1px); opacity:.9; }
 
-/* ---------------- Settings row (replaces sidebar) ---------------- */
-.settings-label{ font-size:.82rem; font-weight:700; color:var(--ink-soft); margin:2px 0 6px 2px; }
+/* ---------------- Settings row ---------------- */
+.settings-label{ font-size:.82rem; font-weight:700; color:#6b5a48; margin:2px 0 6px 2px; }
 div[data-testid="stExpander"]{
     border:1px solid var(--border) !important; border-radius:12px !important;
     background:var(--surface) !important; box-shadow:var(--shadow);
@@ -198,8 +185,8 @@ div[data-testid="stExpander"]{
 
 /* ---------------- How it works ---------------- */
 .section-heading{ text-align:center; margin:56px 0 26px 0; }
-.section-heading h2{ font-size:1.7rem; margin-bottom:6px; }
-.section-heading p{ color:var(--ink-soft); }
+.section-heading h2{ font-size:1.7rem; margin-bottom:6px; color:#3d2f22 !important; }
+.section-heading p{ color:#6b5a48 !important; }
 .step-card{
     background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
     padding:24px; height:100%; box-shadow:var(--shadow);
@@ -207,34 +194,35 @@ div[data-testid="stExpander"]{
 }
 .step-card:hover{ transform:translateY(-4px); box-shadow:0 12px 30px rgba(16,17,20,.09); }
 .step-num{
-    width:36px; height:36px; border-radius:10px; background:var(--accent-soft); color:var(--ink);
+    width:36px; height:36px; border-radius:10px; background:var(--accent-soft); color:#3d2f22;
     display:flex; align-items:center; justify-content:center; font-weight:800; margin-bottom:14px;
     font-size:.95rem;
 }
-.step-card h4{ font-size:1.02rem; margin:0 0 6px 0; }
-.step-card p{ font-size:.87rem; color:var(--ink-soft); line-height:1.55; margin:0; }
+.step-card h4{ font-size:1.02rem; margin:0 0 6px 0; color:#3d2f22 !important; }
+.step-card p{ font-size:.87rem; color:#6b5a48 !important; line-height:1.55; margin:0; }
 
-/* ---------------- Scan progress (loading experience) ---------------- */
+/* ---------------- Scan progress ---------------- */
 .scan-progress{ animation:fadeIn .3s ease; }
 .scan-progress-title{
     font-weight:700; font-size:1rem; display:flex; align-items:center; gap:10px; margin-bottom:16px;
+    color:#3d2f22 !important;
 }
 .scan-spinner{
     width:16px; height:16px; border-radius:50%; border:2px solid var(--border);
-    border-top-color:var(--ink); animation:spin .8s linear infinite;
+    border-top-color:#3d2f22; animation:spin .8s linear infinite;
 }
 @keyframes spin{ to{ transform:rotate(360deg); } }
 .scan-step{
-    display:flex; align-items:center; gap:12px; padding:10px 4px; font-size:.9rem; color:var(--ink-faint);
+    display:flex; align-items:center; gap:12px; padding:10px 4px; font-size:.9rem; color:#a4917d;
     transition:color .2s ease;
 }
-.scan-step.active{ color:var(--ink); font-weight:600; }
-.scan-step.done{ color:var(--ink-soft); font-weight:600; }
+.scan-step.active{ color:#3d2f22; font-weight:600; }
+.scan-step.done{ color:#6b5a48; font-weight:600; }
 .scan-dot{ width:9px; height:9px; border-radius:50%; background:var(--border); flex:none; transition:background .2s ease; }
-.scan-step.active .scan-dot{ background:var(--ink); animation:pulseDot 1s ease infinite; }
+.scan-step.active .scan-dot{ background:#3d2f22; animation:pulseDot 1s ease infinite; }
 .scan-step.done .scan-dot{ background:var(--safe); }
 .scan-bar-track{ height:4px; border-radius:999px; background:var(--border); margin-top:6px; overflow:hidden; }
-.scan-bar-fill{ height:100%; background:var(--ink); border-radius:999px; transition:width .3s ease; }
+.scan-bar-fill{ height:100%; background:#3d2f22; border-radius:999px; transition:width .3s ease; }
 
 /* ---------------- Verdict banner ---------------- */
 .verdict-banner{
@@ -247,7 +235,7 @@ div[data-testid="stExpander"]{
 .verdict-title{ font-size:1.3rem; font-weight:800; margin:0; }
 .verdict-safe .verdict-title{ color:var(--safe); }
 .verdict-danger .verdict-title{ color:var(--danger); }
-.verdict-sub{ font-size:.85rem; color:var(--ink-soft); margin-top:2px; }
+.verdict-sub{ font-size:.85rem; color:#6b5a48 !important; margin-top:2px; }
 
 /* ---------------- Model result cards ---------------- */
 .model-card{
@@ -256,7 +244,7 @@ div[data-testid="stExpander"]{
     transition:transform .18s ease, box-shadow .18s ease;
 }
 .model-card:hover{ transform:translateY(-3px); box-shadow:0 12px 30px rgba(16,17,20,.09); }
-.model-name{ font-weight:700; font-size:.95rem; margin-bottom:10px; color:var(--ink-soft); }
+.model-name{ font-weight:700; font-size:.95rem; margin-bottom:10px; color:#6b5a48 !important; }
 .ring{
     width:112px; height:112px; border-radius:50%; margin:0 auto 12px auto;
     display:flex; align-items:center; justify-content:center; position:relative;
@@ -265,27 +253,27 @@ div[data-testid="stExpander"]{
     width:88px; height:88px; border-radius:50%; background:var(--surface);
     display:flex; flex-direction:column; align-items:center; justify-content:center;
 }
-.ring-pct{ font-size:1.2rem; font-weight:800; }
-.ring-caption{ font-size:.65rem; color:var(--ink-soft); font-weight:600; }
+.ring-pct{ font-size:1.2rem; font-weight:800; color:#3d2f22 !important; }
+.ring-caption{ font-size:.65rem; color:#6b5a48 !important; font-weight:600; }
 .pill{
     display:inline-block; padding:5px 14px; border-radius:999px; font-size:.78rem; font-weight:700;
     margin-top:4px;
 }
 .pill-safe{ background:var(--safe-soft); color:var(--safe); }
 .pill-danger{ background:var(--danger-soft); color:var(--danger); }
-.model-conf{ font-size:.78rem; color:var(--ink-soft); margin-top:8px; }
+.model-conf{ font-size:.78rem; color:#6b5a48 !important; margin-top:8px; }
 
-/* ---------------- Detail chips (Risk Level + Recommendation) ---------------- */
+/* ---------------- Detail chips ---------------- */
 .card-divider{ height:1px; background:var(--border); margin:16px 0 14px 0; }
 .detail-row{ display:flex; align-items:center; justify-content:space-between; font-size:.78rem; margin-bottom:8px; }
-.detail-key{ color:var(--ink-faint); font-weight:600; }
-.detail-val{ font-weight:700; }
+.detail-key{ color:#a4917d; font-weight:600; }
+.detail-val{ font-weight:700; color:#3d2f22 !important; }
 .risk-chip{ padding:3px 10px; border-radius:999px; font-size:.72rem; font-weight:700; }
 .risk-Low, .risk-Guarded{ background:var(--safe-soft); color:var(--safe); }
 .risk-Elevated, .risk-Critical{ background:var(--danger-soft); color:var(--danger); }
-.model-reco{ font-size:.76rem; color:var(--ink-soft); line-height:1.5; text-align:left; margin-top:4px; }
+.model-reco{ font-size:.76rem; color:#6b5a48 !important; line-height:1.5; text-align:left; margin-top:4px; }
 
-/* ---------------- Misc containers ---------------- */
+/* ---------------- Misc ---------------- */
 div[data-testid="stDataFrame"]{
     border-radius:var(--radius) !important; overflow:hidden; border:1px solid var(--border);
 }
@@ -297,12 +285,19 @@ div[data-testid="stDataFrame"]{
 /* ---------------- Footer ---------------- */
 .linkora-footer{
     margin-top:64px; padding:30px 10px; border-top:1px solid var(--border);
-    text-align:center; color:var(--ink-soft); font-size:.83rem;
+    text-align:center; color:#6b5a48 !important; font-size:.83rem;
 }
 .linkora-footer .foot-links{ margin-bottom:10px; }
-.linkora-footer .foot-links span{ margin:0 10px; font-weight:600; color:var(--ink); }
+.linkora-footer .foot-links span{ margin:0 10px; font-weight:600; color:#3d2f22 !important; }
 
 hr{ border-color:var(--border) !important; }
+
+/* Force Streamlit default text elements to dark brown */
+.stMarkdown, .stMarkdown p, .stMarkdown span,
+div[data-testid="stText"], .stCaption, small,
+div[data-baseweb="caption"] {
+    color:#3d2f22 !important;
+}
 </style>
 """,
     unsafe_allow_html=True,
@@ -312,18 +307,13 @@ st.markdown(
     """
     <div class="linkora-nav">
         <div class="linkora-logo"><div class="mark">🛡️</div>Linkora</div>
-        <div class="linkora-nav-links">
-            <a href="#product">Product</a><a href="#how-it-works">How it works</a><a href="#docs">Docs</a>
-        </div>
         <div class="linkora-badge">● Deep Learning Engine</div>
     </div>
     """,
     unsafe_allow_html=True,
 )
 
-# --------------------------------------------------------------------------------
 # Hero
-# --------------------------------------------------------------------------------
 st.markdown(
     """
     <div class="hero-wrap">
@@ -339,9 +329,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# --------------------------------------------------------------------------------
-# How it works (always visible, above results)
-# --------------------------------------------------------------------------------
+# How it works
 st.markdown(
     """
     <div class="section-heading">
@@ -373,9 +361,7 @@ for col, (icon, title, desc) in zip(how_cols, how_steps):
             unsafe_allow_html=True,
         )
 
-# --------------------------------------------------------------------------------
-# Scan card / input (main focus of the page)
-# --------------------------------------------------------------------------------
+# Scan card
 st.markdown('<div class="scan-card">', unsafe_allow_html=True)
 st.markdown('<div class="scan-card-label">🔍 Scan a URL</div>', unsafe_allow_html=True)
 
@@ -394,7 +380,6 @@ st.caption(
     "beberapa detik tergantung kecepatan situs target."
 )
 
-# Settings, integrated inline instead of a sidebar
 with st.expander("⚙️ Detection settings"):
     st.markdown('<div class="settings-label">Models to run & compare</div>', unsafe_allow_html=True)
     all_models = ["ANN", "CNN1D", "LSTM"]
@@ -417,10 +402,7 @@ with st.expander("⚙️ Detection settings"):
 
 st.markdown('</div>', unsafe_allow_html=True)
 
-
-# --------------------------------------------------------------------------------
-# Jalankan deteksi
-# --------------------------------------------------------------------------------
+# Deteksi
 if run_detection:
     if not url_input.strip():
         st.warning("Masukkan URL terlebih dahulu.")
@@ -430,14 +412,12 @@ if run_detection:
         st.warning("Pilih minimal satu model di pengaturan deteksi.")
         st.stop()
 
-    # 1. Muat artefak (scaler, urutan fitur)
     try:
         scaler, feature_columns, model_info = load_artifacts()
     except Exception as e:
         st.error(f"❌ Gagal memuat artefak model: {e}")
         st.stop()
 
-    # 2. Ekstrak fitur dari URL — premium multi-stage loading experience
     scan_box = st.empty()
     scan_steps = [
         "Menghubungi server & mengambil halaman",
@@ -449,10 +429,9 @@ if run_detection:
         rows = ""
         for i, label in enumerate(scan_steps):
             state = "done" if i < active_idx else ("active" if i == active_idx else "")
-            dot_icon = "✓" if state == "done" else ""
             rows += (
                 f'<div class="scan-step {state}">'
-                f'<div class="scan-dot"></div>{label} {dot_icon}</div>'
+                f'<div class="scan-dot"></div>{label}</div>'
             )
         scan_box.markdown(
             f'<div class="scan-card scan-progress">'
@@ -492,7 +471,6 @@ if run_detection:
             for item in extraction.approximated_features:
                 st.markdown(f"- {item}")
 
-    # 3. Muat model yang dipilih
     with st.spinner(f"Memuat {len(selected_models)} model…"):
         models_dict, load_errors = load_all_models(selected_models)
 
@@ -502,7 +480,6 @@ if run_detection:
     if not models_dict:
         st.stop()
 
-    # 4. Prediksi
     try:
         results = predict_all(models_dict, extraction.features, feature_columns, scaler)
     except Exception as e:
@@ -515,7 +492,6 @@ if run_detection:
         unsafe_allow_html=True,
     )
 
-    # Verdict gabungan (voting mayoritas antar model yang berhasil)
     votes_phishing = sum(1 for r in results.values() if r["label"] == 1)
     votes_total = len(results)
     is_phishing = votes_phishing > votes_total / 2
@@ -536,7 +512,6 @@ if run_detection:
         unsafe_allow_html=True,
     )
 
-    # Kartu hasil per model — circular progress rings + Risk Level + Recommendation
     cols = st.columns(len(results))
     for col, (name, r) in zip(cols, results.items()):
         with col:
@@ -579,7 +554,6 @@ if run_detection:
 
     st.write("")
 
-    # Tabel perbandingan
     st.markdown('<div class="section-card">', unsafe_allow_html=True)
     st.markdown("#### Model comparison table")
     df_results = pd.DataFrame({
@@ -594,7 +568,6 @@ if run_detection:
     st.dataframe(df_results, width='stretch')
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # Grafik bar perbandingan skor phishing antar model
     st.markdown('<div class="section-card">', unsafe_allow_html=True)
     st.markdown("#### Phishing probability by model")
     fig = go.Figure()
@@ -636,14 +609,12 @@ if run_detection:
 else:
     st.info("⬆️ Masukkan URL di atas lalu klik **Deteksi** untuk memulai analisis.")
 
-# --------------------------------------------------------------------------------
 # Footer
-# --------------------------------------------------------------------------------
 st.markdown(
     """
     <div class="linkora-footer">
         <div class="foot-links">
-            <span>Linkora</span> · <span>Product</span> · <span>Docs</span> · <span>Privacy</span>
+            <span>Linkora</span> · <span>Product</span> · <span>Privacy</span>
         </div>
         Built on the UCI Phishing Websites Dataset · ANN · CNN1D · LSTM ·
         Results are statistical estimates, not a guarantee — always use your own judgement.
