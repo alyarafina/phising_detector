@@ -180,12 +180,17 @@ div[data-testid="stTextInput"] input:focus{
     border-color:#3d2f22 !important;
     box-shadow:0 0 0 3px var(--accent-soft) !important;
 }
-.stButton>button, .stButton>button:focus{
-    background:#3d2f22 !important; color:#fff !important;
+.stButton>button, .stButton>button:focus, .stButton>button:active{
+    background:#3d2f22 !important;
     border-radius:12px !important; border:none !important;
     padding:14px 20px !important; font-weight:700 !important; font-size:.95rem !important;
     transition:transform .12s ease, opacity .12s ease;
     box-shadow:0 4px 14px rgba(11,13,16,.18) !important;
+    min-height:52px;
+}
+.stButton>button *, .stButton>button p, .stButton>button span,
+.stButton>button div{
+    color:#ffffff !important;
 }
 .stButton>button:hover{ transform:translateY(-1px); opacity:.9; }
 
