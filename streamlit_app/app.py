@@ -473,7 +473,7 @@ if run_detection:
     extraction_time = time.time() - t0
     render_scan(2, 85)
     time.sleep(0.25)
-    render_scan(3, 100)
+    render_scan(len(scan_steps),100)
     time.sleep(0.2)
     scan_box.empty()
 
