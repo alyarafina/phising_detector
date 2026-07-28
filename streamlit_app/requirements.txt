@@ -1,6 +1,6 @@
 # Dipinning agar environment training (notebook) dan environment yang menjalankan
 # aplikasi Streamlit ini konsisten (menghindari error load model akibat mismatch versi).
-tensorflow==2.21.0
+tensorflow==2.18.0
 streamlit==1.59.1
 scikit-learn==1.8.0
 joblib==1.5.3
