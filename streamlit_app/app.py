@@ -321,7 +321,7 @@ st.markdown(
         <h1 class="hero-title">Detect phishing URLs<br>before they reach your users.</h1>
         <p class="hero-sub">
             Linkora extracts 30 structural, WHOIS, and DNS signals from any URL and runs
-            three deep learning models — ANN, CNN1D, and LSTM — side by side to give you
+            three deep learning models (ANN, CNN1D, and LSTM) side by side to give you
             a confident, explainable verdict.
         </p>
     </div>
@@ -617,7 +617,7 @@ st.markdown(
             <span>Linkora</span> · <span>Product</span> · <span>Privacy</span>
         </div>
         Built on the UCI Phishing Websites Dataset · ANN · CNN1D · LSTM ·
-        Results are statistical estimates, not a guarantee — always use your own judgement.
+        Results are statistical estimates, not a guarantee, always use your own judgement.
     </div>
     """,
     unsafe_allow_html=True,
