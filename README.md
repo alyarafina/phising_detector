@@ -5,27 +5,6 @@ mendeteksi apakah sebuah website bersifat **Phishing** atau **Legitimate (aman)*
 dengan notebook evaluasi menyeluruh dan aplikasi web (Streamlit) tempat pengguna bisa
 memasukkan URL secara langsung.
 
-## 📁 Struktur Folder
-
-.
-├── phishing_classification_ANN_CNN_LSTM.ipynb # Notebook lengkap: EDA, training, evaluasi
-├── dataset/
-│ ├── phishing.csv # UCI Phishing Websites Dataset (11.054 baris)
-│ └── phishing_attribute_description.txt # Deskripsi format atribut dataset asli
-└── streamlit_app/
-├── app.py # Aplikasi web utama
-├── feature_extractor.py # Mengubah URL -> 30 fitur (WHOIS, DNS, konten HTML, dll.)
-├── model_utils.py # Load model & jalankan prediksi
-├── requirements.txt
-└── models/ # Dihasilkan otomatis oleh notebook (langkah "Menyimpan Artefak")
-├── best_ANN.keras
-├── best_CNN1D.keras
-├── best_LSTM.keras
-├── scaler.pkl
-├── feature_columns.json
-├── model_info.json
-└── evaluation_metrics_summary.csv
-
 ## 🚀 Cara Menjalankan
 
 ### 1. Install dependencies
