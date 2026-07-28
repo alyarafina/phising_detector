@@ -54,20 +54,20 @@ st.markdown(
 
 <style>
 :root{
-    --ink:#0b0d10;
-    --ink-soft:#3a3f47;
-    --ink-faint:#8a8f98;
+    --ink:#3d2f22;
+    --ink-soft:#6b5a48;
+    --ink-faint:#a4917d;
     --surface:#ffffff;
-    --surface-alt:#f6f7f9;
-    --border:#e7e8eb;
-    --accent:#111318;
-    --accent-soft:#f0f1f3;
-    --safe:#16a34a;
-    --safe-soft:#eafbf1;
-    --danger:#dc2626;
-    --danger-soft:#fdecec;
+    --surface-alt:#faf6ef;
+    --border:#e8ddcd;
+    --accent:#8a6d46;
+    --accent-soft:#f3ead9;
+    --safe:#3f8556;
+    --safe-soft:#eaf6ee;
+    --danger:#b0503b;
+    --danger-soft:#fbeee9;
     --radius:16px;
-    --shadow:0 1px 2px rgba(16,17,20,.04), 0 8px 24px rgba(16,17,20,.06);
+    --shadow:0 1px 2px rgba(90,70,40,.05), 0 8px 24px rgba(90,70,40,.07);
 }
 
 html, body, [class*="css"]{
@@ -79,6 +79,29 @@ html, body, [class*="css"]{
 #MainMenu, footer, header[data-testid="stHeader"]{visibility:hidden; height:0;}
 section[data-testid="stSidebar"]{ display:none; }
 .block-container{padding-top:1rem; max-width:1080px;}
+
+/* ---------------- Responsive: tablet & mobile ---------------- */
+@media (max-width: 900px){
+    .block-container{ padding-left:1rem !important; padding-right:1rem !important; }
+    div[data-testid="stHorizontalBlock"]{ flex-wrap:wrap !important; }
+    div[data-testid="stHorizontalBlock"] > div[data-testid="column"]{
+        min-width:100% !important; flex:1 1 100% !important;
+    }
+}
+@media (max-width: 640px){
+    .linkora-nav{ flex-wrap:wrap; padding:12px 16px; gap:8px; }
+    .linkora-nav-links{ display:none; }
+    .hero-title{ font-size:1.9rem !important; }
+    .hero-sub{ font-size:.95rem !important; padding:0 6px; }
+    .hero-wrap{ padding:24px 4px 4px 4px; }
+    .scan-card{ padding:18px 16px; }
+    .section-card{ padding:16px 14px; }
+    .step-card{ padding:18px; }
+    .model-card{ padding:16px; }
+    .ring{ width:96px; height:96px; }
+    .ring-inner{ width:76px; height:76px; }
+    .verdict-banner{ padding:18px 16px; flex-direction:column; align-items:flex-start; }
+}
 
 h1,h2,h3,h4,h5{
     font-family:'Manrope', 'Inter', sans-serif;
@@ -578,7 +601,7 @@ if run_detection:
     fig.add_trace(go.Bar(
         x=list(results.keys()),
         y=[r["prob_phishing"] for r in results.values()],
-        marker_color=["#dc2626" if r["label"] == 1 else "#16a34a" for r in results.values()],
+        marker_color=["#b0503b" if r["label"] == 1 else "#3f8556" for r in results.values()],
         text=[f"{r['prob_phishing']:.1f}%" for r in results.values()],
         textposition="outside",
         marker_line_width=0,
@@ -590,7 +613,7 @@ if run_detection:
         margin=dict(t=20, l=10, r=10, b=10),
         plot_bgcolor="rgba(0,0,0,0)",
         paper_bgcolor="rgba(0,0,0,0)",
-        font=dict(family="Inter, sans-serif", color="#0b0d10"),
+        font=dict(family="Inter, sans-serif", color="#3d2f22"),
     )
     st.plotly_chart(fig, width='stretch')
     st.markdown('</div>', unsafe_allow_html=True)
