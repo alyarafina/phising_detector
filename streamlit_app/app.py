@@ -569,7 +569,18 @@ if run_detection:
     st.markdown('</div>', unsafe_allow_html=True)
 
     st.markdown('<div class="section-card">', unsafe_allow_html=True)
-    st.markdown("#### Phishing probability by model")
+    st.markdown(
+    """
+    <h4 style="
+        color:#3d2f22;
+        font-weight:700;
+        margin-bottom:12px;
+    ">
+        Phishing probability by model
+    </h4>
+    """,
+    unsafe_allow_html=True,
+    )
     fig = go.Figure()
     fig.add_trace(go.Bar(
         x=list(results.keys()),
