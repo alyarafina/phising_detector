@@ -586,8 +586,6 @@ if run_detection:
     st.dataframe(df_results, width='stretch')
     st.markdown('</div>', unsafe_allow_html=True)
 
-    st.markdown('<div class="section-card">', unsafe_allow_html=True)
-    st.markdown("#### Phishing probability by model")
     fig = go.Figure()
     fig.add_trace(go.Bar(
         x=list(results.keys()),
