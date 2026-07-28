@@ -647,8 +647,11 @@ if run_detection:
         zeroline=False,
     )
 
-    st.plotly_chart(fig, use_container_width=True)
-    st.plotly_chart(fig, width='stretch')
+    st.plotly_chart(
+    fig,
+    width="stretch",
+    key="phishing_probability_chart",
+    )
     st.markdown('</div>', unsafe_allow_html=True)
 
     if model_info.get("best_model") in results:
