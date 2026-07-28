@@ -598,14 +598,56 @@ if run_detection:
         marker_line_width=0,
     ))
     fig.update_layout(
-        yaxis_title="Probabilitas Phishing (%)",
+        title=dict(
+            text="Phishing probability by model",
+            x=0,
+            font=dict(
+                family="Manrope",
+                size=22,
+                color="#3d2f22",
+            ),
+        ),
+        yaxis_title="Phishing Probability (%)",
         yaxis_range=[0, 110],
-        height=360,
-        margin=dict(t=20, l=10, r=10, b=10),
+        height=380,
+        margin=dict(
+            t=45,
+            l=40,
+            r=20,
+            b=40,
+        ),
         plot_bgcolor="rgba(0,0,0,0)",
         paper_bgcolor="rgba(0,0,0,0)",
-        font=dict(family="Inter, sans-serif", color="#3d2f22"),
+        font=dict(
+            family="Inter",
+            size=14,
+            color="#3d2f22",
+        ),
     )
+
+    fig.update_xaxes(
+        tickfont=dict(
+            color="#3d2f22",
+            size=14,
+        ),
+        title_font=dict(
+            color="#3d2f22",
+        ),
+    )
+
+    fig.update_yaxes(
+        tickfont=dict(
+            color="#3d2f22",
+            size=14,
+        ),
+        title_font=dict(
+            color="#3d2f22",
+        ),
+        gridcolor="#e7ddcf",
+        zeroline=False,
+    )
+
+st.plotly_chart(fig, use_container_width=True)
     st.plotly_chart(fig, width='stretch')
     st.markdown('</div>', unsafe_allow_html=True)
 
