@@ -126,19 +126,32 @@ p, span, div, label, li {
 }
 
 /* ---------------- Hero ---------------- */
-.hero-wrap{ text-align:center; padding:36px 12px 12px 12px; animation:fadeSlideUp .6s ease; }
+/* FIX: pastikan container markdown Streamlit ikut center-kan konten hero */
+div[data-testid="stMarkdownContainer"] .hero-wrap{
+    text-align:center !important;
+    width:100%;
+    max-width:820px;
+    margin:0 auto;
+}
+div[data-testid="stMarkdownContainer"] .hero-wrap *{
+    text-align:center !important;
+}
+.hero-wrap{
+    padding:36px 12px 12px 12px;
+    animation:fadeSlideUp .6s ease;
+}
 .hero-eyebrow{
     display:inline-flex; align-items:center; gap:6px;
     font-size:.78rem; font-weight:700; color:#3d2f22;
     background:var(--accent-soft); padding:6px 14px; border-radius:999px;
-    margin-bottom:18px; border:1px solid var(--border);
+    margin:0 auto 18px auto; border:1px solid var(--border);
 }
 .hero-title{
-    font-size:2.9rem; font-weight:800; line-height:1.12; margin:0 0 14px 0;
+    font-size:2.9rem; font-weight:800; line-height:1.12; margin:0 auto 14px auto;
     letter-spacing:-0.03em; color:#3d2f22 !important;
 }
 .hero-sub{
-    max-width:640px; margin:0 auto; color:#6b5a48 !important; font-size:1.05rem; line-height:1.6;
+    max-width:640px; margin:0 auto !important; color:#6b5a48 !important; font-size:1.05rem; line-height:1.6;
 }
 @keyframes fadeSlideUp{
     from{opacity:0; transform:translateY(14px);}
@@ -569,18 +582,7 @@ if run_detection:
     st.markdown('</div>', unsafe_allow_html=True)
 
     st.markdown('<div class="section-card">', unsafe_allow_html=True)
-    st.markdown(
-    """
-    <h4 style="
-        color:#3d2f22;
-        font-weight:700;
-        margin-bottom:12px;
-    ">
-        Phishing probability by model
-    </h4>
-    """,
-    unsafe_allow_html=True,
-    )
+    st.markdown("#### Phishing probability by model")
     fig = go.Figure()
     fig.add_trace(go.Bar(
         x=list(results.keys()),
@@ -628,7 +630,7 @@ st.markdown(
             <span>Linkora</span> · <span>Product</span> · <span>Privacy</span>
         </div>
         Built on the UCI Phishing Websites Dataset · ANN · CNN1D · LSTM ·
-        Results are statistical estimates, not a guarantee, always use your own judgement.
+        Results are statistical estimates, not a guarantee — always use your own judgement.
     </div>
     """,
     unsafe_allow_html=True,
