@@ -6,7 +6,6 @@ dengan notebook evaluasi menyeluruh dan aplikasi web (Streamlit) tempat pengguna
 memasukkan URL secara langsung.
 
 ## 🚀 Cara Menjalankan
-
 ### 1. Install dependencies
 
 ```bash
