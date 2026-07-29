@@ -55,6 +55,17 @@ def risk_profile(prob_phishing: float, label: int):
     return "Critical", "This URL strongly matches known phishing patterns. Do not enter credentials, payment details, or personal information."
 
 
+# Force a light color-scheme at the document level BEFORE Streamlit's own
+# CSS loads. This is what actually stops iOS/Android from applying a dark
+# UA stylesheet to native form controls and portaled (popover/dropdown) UI.
+st.markdown(
+    """
+    <meta name="color-scheme" content="light">
+    <meta name="theme-color" content="#faf6ef">
+    """,
+    unsafe_allow_html=True,
+)
+
 st.markdown(
     """
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -65,6 +76,33 @@ st.markdown(
 /* Force light rendering even if the phone/browser is in dark mode —
    fixes native dark UA styling leaking into inputs, selects, expanders */
 :root, html, body, .stApp{ color-scheme: light !important; }
+
+/* BaseWeb (the library behind Streamlit's selects/multiselects) renders its
+   popovers/dropdowns in a portal appended to <body>, OUTSIDE .stApp. Any
+   selector scoped under .stApp never reaches it, which is why the dropdown
+   in "Detection settings" showed up black. These rules are intentionally
+   unscoped (not under .stApp) so they also catch the portaled content. */
+body div[data-baseweb="popover"],
+body div[data-baseweb="popover"] *{
+    color-scheme: light !important;
+}
+body div[data-baseweb="popover"] ul[data-testid="stVirtualDropdown"]{
+    background:#ffffff !important;
+    border:1px solid #e8ddcd !important;
+    box-shadow:0 8px 24px rgba(90,70,40,.18);
+}
+body div[data-baseweb="popover"] ul[data-testid="stVirtualDropdown"] li{
+    background:#ffffff !important;
+    color:#3d2f22 !important;
+}
+body div[data-baseweb="popover"] ul[data-testid="stVirtualDropdown"] li:hover,
+body div[data-baseweb="popover"] ul[data-testid="stVirtualDropdown"] li[aria-selected="true"]{
+    background:#f3ead9 !important;
+    color:#3d2f22 !important;
+}
+body div[data-baseweb="popover"] li *{
+    color:#3d2f22 !important;
+}
 
 :root{
     --ink:#3d2f22;
@@ -440,6 +478,16 @@ div[data-testid="stDataFrame"]{
     color:var(--ink) !important;
 }
 
+/* Plotly chart container: force a light backdrop behind the transparent
+   figure so it never inherits a dark surface on mobile. */
+div[data-testid="stPlotlyChart"]{
+    background:var(--surface) !important;
+    border-radius:var(--radius);
+    border:1px solid var(--border);
+    padding:8px;
+    box-shadow:var(--shadow);
+}
+
 /* ---------------- Footer ---------------- */
 .linkora-footer{
     margin-top:64px; padding:30px 10px; border-top:1px solid var(--border);
@@ -732,6 +780,10 @@ if run_detection:
     render_html_table(df_results, include_index=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
+    # NOTE: template="plotly_white" + theme=None on st.plotly_chart below
+    # are what stop this chart from going black on mobile. Without
+    # theme=None, Streamlit re-applies its own auto (dark-aware) theme
+    # on top of the figure, overriding all the colors set here.
     fig = go.Figure()
     fig.add_trace(go.Bar(
         x=list(results.keys()),
@@ -742,6 +794,7 @@ if run_detection:
         marker_line_width=0,
     ))
     fig.update_layout(
+        template="plotly_white",
         title=dict(
             text="Phishing probability by model",
             x=0,
@@ -777,6 +830,7 @@ if run_detection:
         title_font=dict(
             color="#3d2f22",
         ),
+        gridcolor="#e7ddcf",
     )
 
     fig.update_yaxes(
@@ -795,6 +849,7 @@ if run_detection:
         fig,
         width="stretch",
         key="phishing_probability_chart",
+        theme=None,  # <-- disable Streamlit's auto/dark theme override
     )
     st.markdown('</div>', unsafe_allow_html=True)
 
