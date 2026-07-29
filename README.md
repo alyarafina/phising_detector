@@ -5,6 +5,8 @@ mendeteksi apakah sebuah website bersifat **Phishing** atau **Legitimate (aman)*
 dengan notebook evaluasi menyeluruh dan aplikasi web (Streamlit) tempat pengguna bisa
 memasukkan URL secara langsung.
 
+Link WEBSITE : https://linkoradetector.streamlit.app/
+
 ## 🚀 Cara Menjalankan
 ### 1. Install dependencies
 
