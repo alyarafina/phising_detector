@@ -20,6 +20,31 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
+def render_html_table(df: pd.DataFrame, include_index: bool = True):
+    """Render a DataFrame as a themed HTML table (avoids st.dataframe's
+    canvas grid, which renders dark and unreadable under mobile OS dark mode)."""
+    header_cells = ""
+    if include_index:
+        idx_name = df.index.name or ""
+        header_cells += f"<th>{idx_name}</th>"
+    for col in df.columns:
+        header_cells += f"<th>{col}</th>"
+
+    body_rows = ""
+    for idx, row in df.iterrows():
+        cells = f"<td><strong>{idx}</strong></td>" if include_index else ""
+        for val in row:
+            cells += f"<td>{val}</td>"
+        body_rows += f"<tr>{cells}</tr>"
+
+    html = (
+        '<div class="linkora-table-wrap"><table class="linkora-table">'
+        f"<thead><tr>{header_cells}</tr></thead>"
+        f"<tbody>{body_rows}</tbody></table></div>"
+    )
+    st.markdown(html, unsafe_allow_html=True)
+
+
 def risk_profile(prob_phishing: float, label: int):
     if label == 0 and prob_phishing < 15:
         return "Low", "This URL shows very few phishing indicators. It appears safe to visit, but always verify the domain before entering credentials."
@@ -37,6 +62,10 @@ st.markdown(
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
+/* Force light rendering even if the phone/browser is in dark mode —
+   fixes native dark UA styling leaking into inputs, selects, expanders */
+:root, html, body, .stApp{ color-scheme: light !important; }
+
 :root{
     --ink:#3d2f22;
     --ink-soft:#6b5a48;
@@ -230,30 +259,40 @@ div[data-testid="stTextInput"] input:focus{
 div[data-testid="stExpander"]{
     border:1px solid var(--border) !important; border-radius:12px !important;
     background:var(--surface) !important; box-shadow:var(--shadow);
+    overflow:hidden;
 }
+div[data-testid="stExpander"] details{ background:var(--surface) !important; }
 div[data-testid="stExpander"] summary{
+    background:var(--surface) !important;
     color:var(--ink) !important; font-weight:600 !important;
 }
 div[data-testid="stExpander"] summary:hover{
     color:var(--accent) !important;
+    background:var(--surface-alt) !important;
 }
+div[data-testid="stExpander"] summary span{ color:var(--ink) !important; }
+div[data-testid="stExpander"] summary p{ color:var(--ink) !important; }
 div[data-testid="stExpander"] svg{ fill:var(--ink) !important; }
+div[data-testid="stExpanderDetails"]{ background:var(--surface) !important; }
 
-/* Multiselect chips / dropdown legibility */
+/* Multiselect chips / dropdown legibility (also fixes iOS dark-mode leak) */
+div[data-testid="stMultiSelect"] > div{ background:var(--surface-alt) !important; }
 div[data-testid="stMultiSelect"] div[data-baseweb="select"]{
     background:var(--surface-alt) !important;
     border-radius:12px !important;
     border:1.5px solid var(--border) !important;
 }
-div[data-testid="stMultiSelect"] span{
-    color:var(--ink) !important;
+div[data-testid="stMultiSelect"] div[data-baseweb="select"] > div{
+    background:var(--surface-alt) !important;
 }
+div[data-testid="stMultiSelect"] span{ color:var(--ink) !important; }
 span[data-baseweb="tag"]{
     background:var(--ink) !important;
     color:#ffffff !important;
     border-radius:8px !important;
 }
 span[data-baseweb="tag"] span{ color:#ffffff !important; }
+span[data-baseweb="tag"] svg{ fill:#ffffff !important; }
 ul[data-testid="stVirtualDropdown"]{
     background:var(--surface) !important;
     border:1px solid var(--border) !important;
@@ -265,6 +304,24 @@ ul[data-testid="stVirtualDropdown"] li{
 ul[data-testid="stVirtualDropdown"] li:hover{
     background:var(--accent-soft) !important;
 }
+
+/* ---------------- Custom HTML tables ----------------
+   Replaces st.dataframe, whose grid renders on a <canvas> that ignores
+   CSS and turns dark/unreadable under mobile OS dark mode. */
+.linkora-table-wrap{ overflow-x:auto; border-radius:12px; border:1px solid var(--border); }
+table.linkora-table{
+    width:100%; border-collapse:collapse; font-size:.85rem; background:var(--surface);
+}
+table.linkora-table th{
+    background:var(--accent-soft); color:var(--ink) !important; font-weight:700;
+    text-align:left; padding:10px 14px; border-bottom:1px solid var(--border); white-space:nowrap;
+}
+table.linkora-table td{
+    padding:10px 14px; border-bottom:1px solid var(--border); color:var(--ink) !important;
+    white-space:nowrap;
+}
+table.linkora-table tr:last-child td{ border-bottom:none; }
+table.linkora-table tr:hover td{ background:var(--surface-alt); }
 
 /* ---------------- How it works ---------------- */
 .section-heading{ text-align:center; margin:56px 0 26px 0; }
@@ -672,7 +729,7 @@ if run_detection:
         }
         for name, r in results.items()
     }).T
-    st.dataframe(df_results, width="stretch")
+    render_html_table(df_results, include_index=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
     fig = go.Figure()
@@ -754,7 +811,7 @@ if run_detection:
             "Fitur": feature_columns,
             "Nilai (-1/0/1)": [extraction.features.get(c, 0) for c in feature_columns],
         })
-        st.dataframe(feat_df, width="stretch", hide_index=True)
+        render_html_table(feat_df, include_index=False)
 
 else:
     st.info("⬆️ Masukkan URL di atas lalu klik **Deteksi** untuk memulai analisis.")
